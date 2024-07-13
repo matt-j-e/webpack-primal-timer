@@ -1,4 +1,4 @@
-class Timer {
+export class Timer {
   constructor(schedule) {
     this.schedule = schedule
     this.current = 0

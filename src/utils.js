@@ -1,4 +1,4 @@
-function createSchedule(exercises) {
+export function createSchedule(exercises) {
   const result = []
 
   // add prep time of 15 secs
@@ -32,7 +32,7 @@ function createSchedule(exercises) {
   return result
 }
 
-function secsToString(secs) {
+export function secsToString(secs) {
   const mins = Math.floor(secs / 60)
   const remainingSecs = Math.round(secs - (mins * 60))
   const finalSecs = remainingSecs < 10 ? '0' + remainingSecs : String(remainingSecs)

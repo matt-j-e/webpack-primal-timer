@@ -1,4 +1,4 @@
-const workouts = [
+export const workouts = [
   {
     name: '0A Movement',
     exercises: [
