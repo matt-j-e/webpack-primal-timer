@@ -1,4 +1,5 @@
 import { workouts } from './workouts'
+import '../styles.css'
 
 const workoutSelect = document.getElementById('workout-select');
 const workoutSelectorButton = document.getElementById('workout-selector-button');

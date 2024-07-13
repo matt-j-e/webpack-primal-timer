@@ -1,6 +1,7 @@
 import { workouts } from "./workouts"
 import { Timer } from "./timer"
 import { createSchedule, secsToString } from "./utils"
+import '../styles.css'
 
 const qs = window.location.search
 const workoutIndex = qs.split('=')[1]

@@ -19,5 +19,13 @@ module.exports = {
       chunks: ['timer'],
       filename: 'timer.html'
     })
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
+  }
 }
