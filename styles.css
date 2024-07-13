@@ -1,0 +1,126 @@
+html {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.workout-container {
+  height: 95vh;
+  width: 95vw;
+  padding: 1rem 0.5rem;
+}
+
+.workout-content-container {
+  display: none;
+}
+
+.workout-timer-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: cornflowerblue;
+}
+
+.workout-timer-container h2 {
+  font-size: 6rem;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.1);
+}
+
+.workout-timer-container h3 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 100;
+}
+
+.countdown-timer {
+  font-size: 6rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.workout-selector {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.workout-selector label, .workout-selector select {
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.workout-selector label {
+  font-weight: bold;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width: 376px) {
+  .workout-container {
+    width: 195vw;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+  }
+
+  .workout-content-container {
+    display: block;
+    width:100vw;
+  }
+
+  .workout-timer-container {
+    width: 95vw
+  }
+
+  .workout-timer-container h2 {
+    font-size: 6rem;
+    font-weight: bold;
+  }
+
+  .workout-timer-container h3 {
+    font-size: 5rem;
+    font-weight: normal;
+  }
+
+  .countdown-timer {
+    font-size: 12rem;
+    font-weight: bold;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .countdown-timer {
+    font-size: 15rem;
+  }
+
+  .workout-timer-container h2 {
+    font-size: 16rem;
+  }
+
+  .workout-timer-container h3 {
+    font-size: 8rem;
+  }
+}

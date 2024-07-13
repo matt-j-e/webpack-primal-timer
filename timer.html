@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./src/workouts.js"></script>
+  <script src="./src/utils.js"></script>
+  <script src="./src/timer.js"></script>
+  <title>Primal Timer</title>
+</head>
+<body>
+  <main id="root" class="workout-container">
+    <div class="workout-content-container">
+      <h2 id="workout-name"></h2>
+      <section id="warmup"></section>
+      <section id="workset"></section>
+      <section id="finisher"></section>
+      <section id="cooldown"></section>
+      <section id="duration"></section>
+    </div>
+    <div class="workout-timer-container">
+      <h2 id="state"></h2>
+      <h3 id="current-exercise"></h3>
+      <div id="countdown" class="countdown-timer"></div>
+      <button id="start-button" class="btn">Start workout</button>
+      <div class="button-container">
+        <button id="pause-button" class="btn">Pause</button>
+        <button id="resume-button" class="btn">Resume</button>
+      </div>
+    </div>
+  </main>
+  <script src="./src/timer-render.js"></script>
+</body>
+</html>
