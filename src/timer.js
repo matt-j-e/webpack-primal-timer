@@ -10,6 +10,8 @@ export class Timer {
     this.countdownId = null
     this.isPaused = false
     this.beep = new Audio("https://www.fesliyanstudios.com/play-mp3/5464")
+    this.beep.preload = 'auto'
+    this.audioInitialized = false
     this.pauseResumeBtn.addEventListener('click', () => this.togglePauseResume())
   }
 
@@ -21,15 +23,40 @@ export class Timer {
     return `${mins}:${secs}`
   }
 
+  async initializeAudio() {
+    if (!this.audioInitialized) {
+      try {
+        await this.beep.play()
+        this.beep.pause()
+        this.beep.currentTime = 0
+        this.audioInitialized = true
+      } catch (error) {
+        console.log('Audio initialization failed:', error)
+      }
+    }
+  }
+
+  async playBeep() {
+    try {
+      this.beep.currentTime = 0
+      await this.beep.play()
+    } catch (error) {
+      console.log('Beep playback failed:', error)
+    }
+  }
+
   start() {
     if (this.countdownId) return
+    this.initializeAudio()
     this.startBtn.style.display = 'none'
     this.countdownId = setInterval(() => {
       this.step = this.schedule[this.current]
       this.currentExerciseElement.innerHTML = this.step.exercise ? this.step.exercise : this.step.nextExercise
       this.stateElement.innerHTML = this.step.state
       this.timerElement.innerHTML = this.formatTime(this.step.remainingTime)
-      if (this.step.remainingTime < 6 || this.step.remainingTime === 10) this.beep.play()
+      if (this.step.remainingTime < 6 || this.step.remainingTime === 10) {
+        this.playBeep()
+      }
       this.current++
       if (this.current > this.schedule.length - 1) {
         clearInterval(this.countdownId)
