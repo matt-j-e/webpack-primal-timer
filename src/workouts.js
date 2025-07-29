@@ -423,6 +423,103 @@ export const workouts = [
     ]
   },
   {
+    name: '3A Movement',
+    exercises: [
+      { name: 'Paradiddle Marc', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Turtle Neck', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Strong Hands', work: 60, rest: 20, phase: 'warmup' },
+      {
+        name: 'Cross-Body Monkey Rock',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      { name: 'Lateral Lunge Flow', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Paradiddle Marc', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Turtle Neck', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Strong Hands', work: 60, rest: 20, phase: 'warmup' },
+      {
+        name: 'Cross-Body Monkey Rock',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      { name: 'Lateral Lunge Flow', work: 60, rest: 20, phase: 'warmup' },
+      {
+        name: 'Lateral Underswitch',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Dragon Squat to Pivot',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Front Kick Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      { name: 'Jaguar Crawl', work: 60, rest: 30, phase: 'workset' },
+      {
+        name: 'Lateral Underswitch',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Dragon Squat to Pivot',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Front Kick Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      { name: 'Jaguar Crawl', work: 60, rest: 30, phase: 'workset' },
+      {
+        name: 'Lateral Underswitch',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Dragon Squat to Pivot',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Front Kick Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      { name: 'Jaguar Crawl', work: 60, rest: 30, phase: 'workset' },
+      {
+        name: 'Lateral Monkey to Side Kick Through',
+        work: 45,
+        rest: 30,
+        phase: 'finisher'
+      },
+      { name: 'Martial Sprawl', work: 45, rest: 30, phase: 'finisher' },
+      {
+        name: 'Lateral Monkey to Side Kick Through',
+        work: 45,
+        rest: 30,
+        phase: 'finisher'
+      },
+      { name: 'Martial Sprawl', work: 45, rest: 30, phase: 'finisher' },
+      { name: 'Supine Shinbox', work: 120, rest: 0, phase: 'cooldown' }
+    ]
+  },  
+  {
     name: 'Primal Flow For Beginners',
     exercises: [
       {name: 'Arm Swings', work: 60, rest: 20, phase: 'warmup'},
@@ -611,6 +708,161 @@ export const workouts = [
         rest: 0,
         phase: 'finisher'
       },
+    ]
+  },
+  {
+    name: 'Dance Fighting - Primal Skills',
+    exercises: [
+      { name: 'Seal Jacks', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Detailed Hands', work: 60, rest: 20, phase: 'warmup' },
+      {
+        name: 'Lateral Hinge with Reach',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      {
+        name: 'Wide Hinge + Sphereical Fingers',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      { name: 'Climber March', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Cat Crawl', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Bear Crawl', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Ginga', work: 60, rest: 30, phase: 'workset' },
+      {
+        name: 'Forward Monkey - slow',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Underswitch to Side Kick Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      { name: 'Ginga + Dodge', work: 60, rest: 30, phase: 'workset' },
+      {
+        name: 'Forward Monkey - slow',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Underswitch to Side Kick Through + hops',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      { name: 'Ginga + Dodge', work: 60, rest: 30, phase: 'workset' },
+      {
+        name: 'Forward Monkey - slow',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Underswitch to Side Kick Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      { name: 'Shinbox', work: 45, rest: 30, phase: 'finisher' },
+      {
+        name: 'Shinbox Tripod Extension',
+        work: 45,
+        rest: 30,
+        phase: 'finisher'
+      },
+      { name: 'Chi Twist', work: 120, rest: 0, phase: 'cooldown' }
+    ]
+  },
+  {
+    name: 'Monkey Combatives - Primal Skill',
+    exercises: [
+      {
+        name: 'Arm Swings to Rotation Arm Swing',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      {
+        name: 'Squat to Straight Leg',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      {
+        name: 'Wrist Figure 8s - overhead',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      {
+        name: 'Strong Hands - out front, fingers up',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      {
+        name: 'Monkey Rocks - vary position,  prog. to Single Arm',
+        work: 60,
+        rest: 20,
+        phase: 'warmup'
+      },
+      { name: 'Cat March', work: 60, rest: 20, phase: 'warmup' },
+      { name: 'Eschiva Frontal', work: 60, rest: 30, phase: 'workset' },
+      { name: 'Lateral Monkey', work: 60, rest: 30, phase: 'workset' },
+      {
+        name: 'Front Step Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Eschiva Frontal + Switch Hand',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Pivoting Lateral Monkey',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Front Step Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Eschiva Frontal + Switch Hand',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Pivoting Lateral Monkey',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Front Step Through',
+        work: 60,
+        rest: 30,
+        phase: 'workset'
+      },
+      {
+        name: 'Alternate Hip Stretches',
+        work: 120,
+        rest: 0,
+        phase: 'cooldown'
+      }
     ]
   }
 ]
