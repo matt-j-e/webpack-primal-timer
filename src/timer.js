@@ -12,6 +12,7 @@ export class Timer {
     this.beep = new Audio("https://www.fesliyanstudios.com/play-mp3/5464")
     this.beep.preload = 'auto'
     this.audioInitialized = false
+    this.wakeLock = null
     this.pauseResumeBtn.addEventListener('click', () => this.togglePauseResume())
   }
 
@@ -45,9 +46,33 @@ export class Timer {
     }
   }
 
+  async requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        this.wakeLock = await navigator.wakeLock.request('screen')
+        console.log('Wake Lock activated')
+      }
+    } catch (error) {
+      console.log('Wake Lock request failed:', error)
+    }
+  }
+
+  async releaseWakeLock() {
+    if (this.wakeLock) {
+      try {
+        await this.wakeLock.release()
+        this.wakeLock = null
+        console.log('Wake Lock released')
+      } catch (error) {
+        console.log('Wake Lock release failed:', error)
+      }
+    }
+  }
+
   start() {
     if (this.countdownId) return
     this.initializeAudio()
+    this.requestWakeLock()
     this.startBtn.style.display = 'none'
     this.countdownId = setInterval(() => {
       this.step = this.schedule[this.current]
@@ -60,6 +85,7 @@ export class Timer {
       this.current++
       if (this.current > this.schedule.length - 1) {
         clearInterval(this.countdownId)
+        this.releaseWakeLock()
         this.currentExerciseElement.style.display = 'none'
         this.stateElement.style.display = 'none'
         this.timerElement.innerHTML = 'COMPLETE'
@@ -79,6 +105,7 @@ export class Timer {
     if (!this.isPaused) {
       clearInterval(this.countdownId)
       this.countdownId = null
+      this.releaseWakeLock()
       this.isPaused = true
       this.pauseResumeBtn.innerHTML = 'Resume'
     }
