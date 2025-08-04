@@ -25,15 +25,14 @@ export class Timer {
   }
 
   async initializeAudio() {
-    if (!this.audioInitialized) {
-      try {
-        await this.beep.play()
-        this.beep.pause()
-        this.beep.currentTime = 0
-        this.audioInitialized = true
-      } catch (error) {
-        console.log('Audio initialization failed:', error)
-      }
+    try {
+      await this.beep.play()
+      this.beep.pause()
+      this.beep.currentTime = 0
+      this.audioInitialized = true
+    } catch (error) {
+      console.log('Audio initialization failed:', error)
+      this.audioInitialized = false
     }
   }
 
@@ -113,6 +112,7 @@ export class Timer {
 
   resume() {
     if (this.isPaused) {
+      this.initializeAudio()
       this.start()
       this.isPaused = false
       this.pauseResumeBtn.innerHTML = 'Pause'
