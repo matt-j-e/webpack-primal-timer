@@ -1,5 +1,24 @@
 export const workouts = [
   {
+    name: 'The 5 Essentials',
+    exercises: [
+      {name: 'March', work: 60, rest: 20, phase: 'warmup'},
+      {name: 'Arm Swing', work: 60, rest: 20, phase: 'warmup'},
+      {name: 'Hinge to Monkey Rock', work: 60, rest: 20, phase: 'warmup'},
+      {name: 'Bounce', work: 60, rest: 20, phase: 'warmup'},
+      {name: 'ISO Cat', work: 60, rest: 30, phase: 'workset'},
+      {name: 'Side Kickthrough', work: 60, rest: 30, phase: 'workset'},
+      {name: 'Deep Squats', work: 60, rest: 30, phase: 'workset'},
+      {name: 'Cat Crawl', work: 60, rest: 30, phase: 'workset'},
+      {name: '90-90 Hip Flow', work: 60, rest: 30, phase: 'workset'},
+      {name: 'ISO Cat', work: 60, rest: 30, phase: 'workset'},
+      {name: 'Side Kickthrough', work: 60, rest: 30, phase: 'workset'},
+      {name: 'Deep Squats', work: 60, rest: 30, phase: 'workset'},
+      {name: 'Cat Crawl', work: 60, rest: 30, phase: 'workset'},
+      {name: '90-90 Hip Flow', work: 60, rest: 30, phase: 'workset'}
+    ]
+  },
+  {
     name: '0A Movement',
     exercises: [
       {name: 'March', work: 60, rest: 20, phase: 'warmup'},
