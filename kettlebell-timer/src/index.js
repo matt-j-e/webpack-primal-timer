@@ -16,5 +16,5 @@ workouts.forEach((workout, i) => {
 
 workoutSelectorButton.addEventListener('click', (e) => {
   console.log('Selected workout index >>>', workoutSelect.value);
-  window.location.href = "timer.html?w=" + workoutSelect.value;
+  window.location.href = "/kettlebell-timer/timer.html?w=" + workoutSelect.value;
 })
