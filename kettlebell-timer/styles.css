@@ -1,0 +1,265 @@
+html {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.workout-container {
+  height: 95vh;
+  width: 95vw;
+  padding: 1rem 0.5rem;
+}
+
+.workout-content-container {
+  display: none;
+}
+
+.workout-timer-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: cornflowerblue;
+}
+
+.workout-timer-container h2 {
+  font-size: 6rem;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.1);
+}
+
+.workout-timer-container h3 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 100;
+}
+
+.target-reps {
+  font-size: 2.5rem;
+  font-weight: 100;
+  color: rgba(0,0,0,0.7);
+}
+
+.countdown-timer {
+  font-size: 6rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.next-exercise {
+  font-size: 0.65rem;
+  font-weight: 100;
+  color: rgba(0,0,0,0.5);
+  font-style: italic;
+}
+
+/* Workout summary sections with progress tracking */
+
+.workout-selector {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.workout-selector label, .workout-selector select {
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.workout-selector label {
+  font-weight: bold;
+}
+
+.btn {
+  padding: 1rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn:active {
+  background-color: #004085;
+}
+
+@media screen and (min-width: 376px) {
+  .workout-container {
+    width: 195vw;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+  }
+
+  .workout-content-container {
+    display: block;
+    width:100vw;
+    padding: 0.3rem;
+  }
+
+  .workout-timer-container {
+    width: 95vw
+  }
+
+  .workout-timer-container h2 {
+    font-size: 6rem;
+    font-weight: bold;
+  }
+
+  .workout-timer-container h3 {
+    font-size: 3rem;
+    font-weight: normal;
+  }
+
+  .target-reps {
+    font-size: 2.5rem;
+  }
+
+  .countdown-timer {
+    font-size: 12rem;
+    font-weight: bold;
+  }
+
+  .next-exercise {
+    font-size: 1.5rem;
+  }
+
+  .workout-content-container #workout-name {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .workout-content-container .phase-section {
+    margin-bottom: 0.3rem;
+  }
+
+  .workout-content-container .phase-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.1rem;
+    color: rgba(0,0,0,0.8);
+    font-weight: bold;
+  }
+
+  .workout-content-container section ul,
+  .workout-content-container .phase-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.2rem 0;
+  }
+
+  .workout-content-container section li,
+  .workout-content-container .phase-section li {
+    position: relative;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    padding: 0 0 0.1rem 2rem;
+  }
+
+  .workout-content-container section li .status-icon,
+  .workout-content-container .phase-section li .status-icon {
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 0.6rem;
+  }
+
+  .workout-content-container section li.completed,
+  .workout-content-container .phase-section li.completed {
+    color: rgba(0,0,0,0.4);
+    text-decoration: line-through;
+  }
+
+  .workout-content-container section li.completed .status-icon::before,
+  .workout-content-container .phase-section li.completed .status-icon::before {
+    content: '✓';
+    color: green;
+  }
+
+  .workout-content-container section li.current,
+  .workout-content-container .phase-section li.current {
+    background-color: rgba(100,149,237,0.2);
+    font-weight: bold;
+    border-radius: 3px;
+  }
+
+  .workout-content-container section li.current .status-icon::before,
+  .workout-content-container .phase-section li.current .status-icon::before {
+    content: '▶';
+    color: cornflowerblue;
+  }
+
+  .workout-content-container section li.upcoming,
+  .workout-content-container .phase-section li.upcoming {
+    color: rgba(0,0,0,0.6);
+  }
+
+  .workout-content-container section li.upcoming .status-icon::before,
+  .workout-content-container .phase-section li.upcoming .status-icon::before {
+    content: '';
+  }
+
+  .workout-content-container #duration p {
+    font-size: 1rem;
+    margin: 0.3rem 0;
+    color: rgba(0,0,0,0.7);
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .countdown-timer {
+    font-size: 10rem;
+  }
+
+  .workout-timer-container h2 {
+    font-size: 10rem;
+  }
+
+  .workout-timer-container h3 {
+    font-size: 6rem;
+  }
+
+  .target-reps {
+    font-size: 2rem;
+  }
+
+  .next-exercise {
+    font-size: 2rem;
+  }
+
+  .workout-content-container #workout-name {
+    font-size: 2.5rem;
+  }
+
+  .workout-content-container .phase-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .workout-content-container section li,
+  .workout-content-container .phase-section li {
+    font-size: 0.9rem;
+  }
+
+  .workout-content-container #duration p {
+    font-size: 1.2rem;
+  }
+}
