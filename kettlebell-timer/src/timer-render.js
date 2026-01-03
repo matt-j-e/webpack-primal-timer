@@ -7,6 +7,11 @@ const qs = window.location.search
 const workoutIndex = qs.split('=')[1]
 const workout = workouts[workoutIndex]
 
+console.log('Kettlebell Timer - Total workouts:', workouts.length);
+console.log('Loading workout index:', workoutIndex);
+console.log('Workout name:', workout?.name);
+console.log('First exercise:', workout?.exercises[0]?.name)
+
 // define workout title
 const workoutNameElement = document.getElementById('workout-name')
 workoutNameElement.innerHTML = workout.name
