@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
 
 module.exports = {
   entry: {
@@ -6,6 +7,10 @@ module.exports = {
     timer: './src/timer-render.js',
     kbIndex: './kettlebell-timer/src/index.js',
     kbTimer: './kettlebell-timer/src/timer-render.js'
+  },
+  resolve: {
+    extensions: ['.js'],
+    modules: [path.resolve(__dirname, 'node_modules')]
   },
   plugins: [
     new HtmlWebpackPlugin({
