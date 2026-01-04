@@ -16,5 +16,15 @@ workouts.forEach((workout, i) => {
 
 workoutSelectorButton.addEventListener('click', (e) => {
   console.log('Selected workout index >>>', workoutSelect.value);
-  window.location.href = "timer.html?w=" + workoutSelect.value;
+  // Build path ensuring we stay in kettlebell-timer directory
+  let basePath = window.location.pathname;
+  // Remove index.html if present
+  if (basePath.endsWith('index.html')) {
+    basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1);
+  }
+  // Ensure trailing slash
+  if (!basePath.endsWith('/')) {
+    basePath += '/';
+  }
+  window.location.href = basePath + "timer.html?w=" + workoutSelect.value;
 })
