@@ -73,7 +73,7 @@ export class Timer {
       if (this.step.nextExercise && this.step.state !== 'Prep') {
         let nextText = `Next: ${this.step.nextExercise}`
         if (this.step.nextReps && this.step.nextWeight) {
-          nextText += ` (${this.step.nextReps}x${this.step.nextWeight}kg)`
+          nextText += ` (${this.step.nextReps} x ${this.step.nextWeight}kg)`
         } else if (this.step.nextReps) {
           nextText += ` (${this.step.nextReps})`
         }
