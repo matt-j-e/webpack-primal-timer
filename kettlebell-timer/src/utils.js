@@ -5,6 +5,8 @@ export function createSchedule(exercises) {
   for (let i = 0; i < 15; i++) {
     result.push({
       nextExercise: 'First up: ' + exercises[0].name,
+      targetReps: exercises[0].targetReps,
+      weight: exercises[0].weight,
       state: 'Prep',
       remainingTime: 15 - i
     })

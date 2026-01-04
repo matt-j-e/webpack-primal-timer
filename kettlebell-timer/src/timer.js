@@ -62,15 +62,15 @@ export class Timer {
 
       // Display target reps with weight
       if (this.step.targetReps && this.step.weight) {
-        this.targetRepsElement.innerHTML = `Target: ${this.step.targetReps}x${this.step.weight}kg`
+        this.targetRepsElement.innerHTML = `${this.step.targetReps} x ${this.step.weight}kg`
       } else if (this.step.targetReps) {
-        this.targetRepsElement.innerHTML = `Target: ${this.step.targetReps} reps`
+        this.targetRepsElement.innerHTML = `${this.step.targetReps} reps`
       } else {
         this.targetRepsElement.innerHTML = ''
       }
 
-      // Show "Next up" throughout the entire exercise
-      if (this.step.nextExercise) {
+      // Show "Next up" throughout the entire exercise, but NOT during Prep
+      if (this.step.nextExercise && this.step.state !== 'Prep') {
         let nextText = `Next: ${this.step.nextExercise}`
         if (this.step.nextReps && this.step.nextWeight) {
           nextText += ` (${this.step.nextReps}x${this.step.nextWeight}kg)`
