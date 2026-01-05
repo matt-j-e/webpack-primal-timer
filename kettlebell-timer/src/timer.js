@@ -12,7 +12,7 @@ export class Timer {
     this.timerElement = document.getElementById('countdown')
     this.countdownId = null
     this.isPaused = false
-    this.beep = new Audio("https://www.fesliyanstudios.com/play-mp3/5464")
+    this.beepUrl = "https://www.fesliyanstudios.com/play-mp3/5464"
     this.audioUnlocked = false
   }
 
@@ -57,9 +57,10 @@ export class Timer {
 
     // Unlock audio for iOS on first user interaction
     if (!this.audioUnlocked) {
-      this.beep.play().then(() => {
-        this.beep.pause()
-        this.beep.currentTime = 0
+      const unlockAudio = new Audio(this.beepUrl)
+      unlockAudio.play().then(() => {
+        unlockAudio.pause()
+        unlockAudio.currentTime = 0
       }).catch(() => {
         // Ignore errors - audio will be unlocked on next play attempt
       })
@@ -100,7 +101,9 @@ export class Timer {
       }
 
       if (this.step.remainingTime < 6 || this.step.remainingTime === 10) {
-        this.beep.play().catch(() => {
+        // Create fresh Audio instance for each beep (more reliable on iOS)
+        const beep = new Audio(this.beepUrl)
+        beep.play().catch(() => {
           // Ignore audio play errors (iOS restrictions)
         })
       }
