@@ -13,6 +13,7 @@ export class Timer {
     this.countdownId = null
     this.isPaused = false
     this.beep = new Audio("https://www.fesliyanstudios.com/play-mp3/5464")
+    this.audioUnlocked = false
   }
 
   updateProgress(exerciseIndex) {
@@ -54,6 +55,17 @@ export class Timer {
     this.pauseResumeBtn.style.display = 'block'
     this.pauseResumeBtn.innerHTML = 'Pause'
 
+    // Unlock audio for iOS on first user interaction
+    if (!this.audioUnlocked) {
+      this.beep.play().then(() => {
+        this.beep.pause()
+        this.beep.currentTime = 0
+      }).catch(() => {
+        // Ignore errors - audio will be unlocked on next play attempt
+      })
+      this.audioUnlocked = true
+    }
+
     this.countdownId = setInterval(() => {
       this.step = this.schedule[this.current]
       this.currentExerciseElement.innerHTML = this.step.exercise ? this.step.exercise : this.step.nextExercise
@@ -87,7 +99,11 @@ export class Timer {
         this.updateProgress(this.step.exerciseIndex)
       }
 
-      if (this.step.remainingTime < 6 || this.step.remainingTime === 10) this.beep.play()
+      if (this.step.remainingTime < 6 || this.step.remainingTime === 10) {
+        this.beep.play().catch(() => {
+          // Ignore audio play errors (iOS restrictions)
+        })
+      }
       this.current++
       if (this.current > this.schedule.length - 1) {
         clearInterval(this.countdownId)
