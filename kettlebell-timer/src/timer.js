@@ -12,11 +12,31 @@ export class Timer {
     this.timerElement = document.getElementById('countdown')
     this.countdownId = null
     this.isPaused = false
-    this.beepUrl = "https://www.fesliyanstudios.com/play-mp3/5464"
-    this.audioUnlocked = false
-    // Keep references to prevent garbage collection
-    this.audioInstances = []
-    this.nextAudioIndex = 0
+    this.beep = new Audio("https://www.fesliyanstudios.com/play-mp3/5464")
+    this.beep.preload = 'auto'
+    this.audioInitialized = false
+  }
+
+  async initializeAudio() {
+    if (!this.audioInitialized) {
+      try {
+        await this.beep.play()
+        this.beep.pause()
+        this.beep.currentTime = 0
+        this.audioInitialized = true
+      } catch (error) {
+        console.log('Audio initialization failed:', error)
+      }
+    }
+  }
+
+  async playBeep() {
+    try {
+      this.beep.currentTime = 0
+      await this.beep.play()
+    } catch (error) {
+      console.log('Beep playback failed:', error)
+    }
   }
 
   updateProgress(exerciseIndex) {
@@ -54,30 +74,10 @@ export class Timer {
       this.pauseResumeBtn.dataset.listenerAdded = 'true'
     }
 
+    this.initializeAudio()
     this.startBtn.style.display = 'none'
     this.pauseResumeBtn.style.display = 'block'
     this.pauseResumeBtn.innerHTML = 'Pause'
-
-    // Unlock and preload audio for iOS on first user interaction
-    if (!this.audioUnlocked) {
-      // Preload 10 audio instances (enough for a full workout)
-      for (let i = 0; i < 10; i++) {
-        const audio = new Audio(this.beepUrl)
-        audio.volume = 1.0
-        audio.preload = 'auto'
-        audio.load()
-        this.audioInstances.push(audio)
-      }
-
-      // Play and pause first one to unlock iOS audio
-      this.audioInstances[0].play().then(() => {
-        this.audioInstances[0].pause()
-        this.audioInstances[0].currentTime = 0
-      }).catch(() => {})
-
-      this.audioUnlocked = true
-      this.nextAudioIndex = 1 // Start using from index 1
-    }
 
     this.countdownId = setInterval(() => {
       this.step = this.schedule[this.current]
@@ -113,22 +113,7 @@ export class Timer {
       }
 
       if (this.step.remainingTime < 6 || this.step.remainingTime === 10) {
-        // Use preloaded audio instance or create new one if needed
-        let beep
-        if (this.audioInstances.length > 0) {
-          // Use next preloaded instance (cycle through them)
-          beep = this.audioInstances[this.nextAudioIndex % this.audioInstances.length]
-          beep.currentTime = 0
-          this.nextAudioIndex++
-        } else {
-          // Fallback: create new instance
-          beep = new Audio(this.beepUrl)
-          beep.volume = 1.0
-        }
-
-        beep.play().catch(() => {
-          // Ignore audio play errors (iOS restrictions)
-        })
+        this.playBeep()
       }
       this.current++
       if (this.current > this.schedule.length - 1) {
