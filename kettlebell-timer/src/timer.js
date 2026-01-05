@@ -14,6 +14,9 @@ export class Timer {
     this.isPaused = false
     this.beepUrl = "https://www.fesliyanstudios.com/play-mp3/5464"
     this.audioUnlocked = false
+    // Keep references to prevent garbage collection
+    this.audioInstances = []
+    this.nextAudioIndex = 0
   }
 
   updateProgress(exerciseIndex) {
@@ -55,16 +58,25 @@ export class Timer {
     this.pauseResumeBtn.style.display = 'block'
     this.pauseResumeBtn.innerHTML = 'Pause'
 
-    // Unlock audio for iOS on first user interaction
+    // Unlock and preload audio for iOS on first user interaction
     if (!this.audioUnlocked) {
-      const unlockAudio = new Audio(this.beepUrl)
-      unlockAudio.play().then(() => {
-        unlockAudio.pause()
-        unlockAudio.currentTime = 0
-      }).catch(() => {
-        // Ignore errors - audio will be unlocked on next play attempt
-      })
+      // Preload 10 audio instances (enough for a full workout)
+      for (let i = 0; i < 10; i++) {
+        const audio = new Audio(this.beepUrl)
+        audio.volume = 1.0
+        audio.preload = 'auto'
+        audio.load()
+        this.audioInstances.push(audio)
+      }
+
+      // Play and pause first one to unlock iOS audio
+      this.audioInstances[0].play().then(() => {
+        this.audioInstances[0].pause()
+        this.audioInstances[0].currentTime = 0
+      }).catch(() => {})
+
       this.audioUnlocked = true
+      this.nextAudioIndex = 1 // Start using from index 1
     }
 
     this.countdownId = setInterval(() => {
@@ -101,8 +113,19 @@ export class Timer {
       }
 
       if (this.step.remainingTime < 6 || this.step.remainingTime === 10) {
-        // Create fresh Audio instance for each beep (more reliable on iOS)
-        const beep = new Audio(this.beepUrl)
+        // Use preloaded audio instance or create new one if needed
+        let beep
+        if (this.audioInstances.length > 0) {
+          // Use next preloaded instance (cycle through them)
+          beep = this.audioInstances[this.nextAudioIndex % this.audioInstances.length]
+          beep.currentTime = 0
+          this.nextAudioIndex++
+        } else {
+          // Fallback: create new instance
+          beep = new Audio(this.beepUrl)
+          beep.volume = 1.0
+        }
+
         beep.play().catch(() => {
           // Ignore audio play errors (iOS restrictions)
         })
