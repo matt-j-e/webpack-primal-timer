@@ -44,6 +44,30 @@ export const workouts = [
     ]
   },
   {
+    name: 'Beginner 19 minute EMOM',
+    workoutType: 'emom',
+    exercises: [
+      {name: 'Hinge', targetReps: 8, weight: 0, work: 60, rest: 0, phase: 'Warmup'},
+      {name: 'Hinge', targetReps: 10, weight: 0, work: 60, rest: 0, phase: 'Warmup'},
+      {name: 'Hinge', targetReps: 8, weight: 12, work: 60, rest: 0, phase: 'Warmup'},
+      {name: 'Hinge', targetReps: 10, weight: 12, work: 60, rest: 0, phase: 'Warmup'},
+      {name: 'Squat', targetReps: 8, weight: 0, work: 60, rest: 0, phase: 'Warmup'},
+      {name: 'Swing', targetReps: 6, weight: 16, work: 60, rest: 0, phase: 'Round 1'},
+      {name: 'Goblet Squat', targetReps: 6, weight: 16, work: 60, rest: 0, phase: 'Round 1'},
+      {name: 'Press', targetReps: 6, weight: 12, work: 60, rest: 0, phase: 'Round 1'},
+      {name: 'Row', targetReps: 6, weight: 12, work: 60, rest: 0, phase: 'Round 1'},
+      {name: 'Swing', targetReps: 8, weight: 16, work: 60, rest: 0, phase: 'Round 2'},
+      {name: 'Goblet Squat', targetReps: 8, weight: 16, work: 60, rest: 0, phase: 'Round 2'},
+      {name: 'Press', targetReps: 8, weight: 12, work: 60, rest: 0, phase: 'Round 2'},
+      {name: 'Row', targetReps: 8, weight: 12, work: 60, rest: 0, phase: 'Round 2'},
+      {name: 'Swing', targetReps: 10, weight: 16, work: 60, rest: 0, phase: 'Round 3'},
+      {name: 'Goblet Squat', targetReps: 10, weight: 16, work: 60, rest: 0, phase: 'Round 3'},
+      {name: 'Press', targetReps: 10, weight: 12, work: 60, rest: 0, phase: 'Round 3'},
+      {name: 'Row', targetReps: 10, weight: 12, work: 60, rest: 0, phase: 'Round 3'},
+      {name: 'Suitcase Walk', targetReps: 1, weight: 16, work: 120, rest: 0, phase: 'Finisher'},
+    ]
+  },
+  {
     name: 'KB EMOM - Full Body A',
     workoutType: 'emom',
     exercises: [
