@@ -178,7 +178,7 @@
         "Clicking Start button calls timer.start()"
       ],
       "dependencies": ["CORE-1", "CORE-2", "CORE-3"],
-      "passes": false
+      "passes": true
     },
     {
       "id": "CORE-5",
