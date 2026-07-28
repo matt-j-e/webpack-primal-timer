@@ -139,7 +139,7 @@
         "Screen Wake Lock is requested on start and released on pause and completion"
       ],
       "dependencies": ["CORE-1", "CORE-2"],
-      "passes": false
+      "passes": true
     },
     {
       "id": "CORE-4",
