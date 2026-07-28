@@ -1,0 +1,1 @@
+CORE-1 DONE: Created core-timer/src/workouts.js with the Core Foundation placeholder workout (3 phases: Warm Up 1 set, Main Set 3 sets 90s rest, Cool Down 1 set).

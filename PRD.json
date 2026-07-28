@@ -1,0 +1,341 @@
+{
+  "product": "Core Timer Sub-App",
+  "description": "A standalone workout timer sub-app for core exercises, following the same architecture as the existing kettlebell-timer sub-app. Workouts are structured hierarchically as phases, each with one or more sets of exercises and configurable inter-set rest. Each exercise has its own work and rest durations. The timer displays the exercise name, a set label ('Set 2 of 3'), and a countdown. Audio beeps alert the user at 10 seconds remaining and during the final 5 seconds of each block.",
+  "tickets": [
+    {
+      "id": "CORE-1",
+      "title": "Create workout data structure",
+      "description": "Create the workouts definition file for the core timer sub-app. This introduces a new hierarchical data model: a workout contains phases, each phase has a name, a number of sets, a restBetweenSets duration (seconds), and an exercises array. Each exercise has a name, work duration (seconds), and rest duration (seconds). One placeholder workout must be created so the rest of the sub-app can be wired up; the user will add real workouts later.",
+      "files": [
+        {
+          "path": "core-timer/src/workouts.js",
+          "action": "create"
+        }
+      ],
+      "data_structure": {
+        "workout": {
+          "name": "string",
+          "phases": [
+            {
+              "name": "string",
+              "sets": "integer",
+              "restBetweenSets": "integer (seconds)",
+              "exercises": [
+                {
+                  "name": "string",
+                  "work": "integer (seconds)",
+                  "rest": "integer (seconds)"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "placeholder_workout": {
+        "name": "Core Foundation",
+        "phases": [
+          { "name": "Warm Up", "sets": 1, "restBetweenSets": 0, "exercises": [
+            { "name": "Dead Bug", "work": 30, "rest": 15 },
+            { "name": "Bird Dog", "work": 30, "rest": 15 },
+            { "name": "Cat Cow", "work": 30, "rest": 15 }
+          ]},
+          { "name": "Main Set", "sets": 3, "restBetweenSets": 90, "exercises": [
+            { "name": "Plank", "work": 40, "rest": 20 },
+            { "name": "Side Plank Left", "work": 40, "rest": 20 },
+            { "name": "Side Plank Right", "work": 40, "rest": 20 }
+          ]},
+          { "name": "Cool Down", "sets": 1, "restBetweenSets": 0, "exercises": [
+            { "name": "Child's Pose", "work": 40, "rest": 20 },
+            { "name": "Supine Twist", "work": 30, "rest": 0 }
+          ]}
+        ]
+      },
+      "acceptance_criteria": [
+        "File exports a named const 'workouts' as an ES module",
+        "Each workout has a 'name' string and a 'phases' array",
+        "Each phase has 'name', 'sets' (integer >= 1), 'restBetweenSets' (integer >= 0), and 'exercises' array",
+        "Each exercise has 'name', 'work' (integer > 0), and 'rest' (integer >= 0)",
+        "The placeholder workout 'Core Foundation' is present with warm-up (1 set), main set (3 sets, 90s inter-set rest), and cool-down (1 set)"
+      ],
+      "dependencies": [],
+      "passes": true
+    },
+    {
+      "id": "CORE-2",
+      "title": "Create schedule generation utility",
+      "description": "Create utils.js for the core timer sub-app. The key function, createSchedule(phases), takes the phases array from a workout and expands it into a flat array of second-by-second schedule steps — one element per second of the entire workout. This is the bridge between the workout data and the Timer class. The secsToString helper can be copied verbatim from kettlebell-timer/src/utils.js.",
+      "files": [
+        {
+          "path": "core-timer/src/utils.js",
+          "action": "create"
+        }
+      ],
+      "reference_file": "kettlebell-timer/src/utils.js",
+      "algorithm": {
+        "overview": "Pre-compute a flat 'occurrences' array (one entry per exercise per set iteration across all phases and sets). Then emit schedule steps: 15s Prep, then for each phase/set/exercise emit work steps then rest steps, then after each non-final set emit inter-set rest steps.",
+        "pre_computation": "For each phase, for each set 1..phase.sets, for each exercise: push { name, phaseName, setNum, totalSets } into occurrences array. This allows O(1) lookup of the next exercise at any point.",
+        "schedule_steps": {
+          "prep": "15 steps: { state: 'Prep', remainingTime: 15..1, nextExercise: 'First up: ' + occurrences[0].name }",
+          "work": "exercise.work steps: { state: 'work', remainingTime: exercise.work..1, exercise: exercise.name, nextExercise: <see below>, setLabel: <see below>, phase: phase.name, exerciseIndex: <global int> }",
+          "rest": "exercise.rest steps (skip if rest === 0): { state: 'rest', remainingTime: exercise.rest..1, nextExercise: <see below>, setLabel: <see below>, phase: phase.name, exerciseIndex: <global int> }",
+          "set_rest": "phase.restBetweenSets steps (only between sets, not after final set): { state: 'set-rest', remainingTime: restBetweenSets..1, nextExercise: 'Set N+1 of M coming up', phase: phase.name }"
+        },
+        "next_exercise_text": "For an exercise that is the last in its set AND not the last set: nextExercise = 'Set N+1 of M coming up'. Otherwise: nextExercise = occurrences[exerciseIndex+1].name, or null if it is the final exercise of the workout.",
+        "set_label": "null when phase.sets === 1 (to avoid cluttering single-set phases). 'Set N of M' when phase.sets > 1. Not present on set-rest or Prep steps.",
+        "exercise_index": "A global integer starting at 0, incremented once per exercise occurrence (i.e. once per exercise per set, across all phases). Never incremented during set-rest steps."
+      },
+      "acceptance_criteria": [
+        "createSchedule(phases) returns an array",
+        "First 15 elements have state 'Prep' with remainingTime counting down from 15 to 1",
+        "Work steps have state 'work', correct exercise name, exerciseIndex, setLabel (null for single-set phases)",
+        "Rest steps have state 'rest' with correct nextExercise text",
+        "The last exercise of a non-final set has nextExercise = 'Set N+1 of M coming up' on its rest steps",
+        "Set-rest steps have state 'set-rest' and no exerciseIndex field",
+        "Set-rest steps are emitted after each non-final set only when restBetweenSets > 0",
+        "Total schedule length matches: 15 + sum over phases of (sets * sum_of_exercise_(work+rest) + (sets-1) * restBetweenSets)",
+        "secsToString correctly formats seconds into M:SS and H:MM:SS"
+      ],
+      "dependencies": [],
+      "passes": false
+    },
+    {
+      "id": "CORE-3",
+      "title": "Create timer class",
+      "description": "Create the Timer class for the core timer sub-app, adapted from kettlebell-timer/src/timer.js. The class drives the second-by-second countdown, updates DOM elements, plays audio beeps, manages the Screen Wake Lock, and handles pause/resume. The key adaptation is: remove all kettlebell-specific fields (targetReps, weight, nextReps, nextWeight), add a set-label display element, and handle state-conditional display logic for the 'set-rest' state.",
+      "files": [
+        {
+          "path": "core-timer/src/timer.js",
+          "action": "create"
+        }
+      ],
+      "reference_file": "kettlebell-timer/src/timer.js",
+      "changes_from_reference": [
+        "Remove this.targetRepsElement and this.nextExerciseElement from constructor",
+        "Add this.setLabelElement = document.getElementById('set-label') to constructor",
+        "Remove all targetReps, weight, nextReps, nextWeight display logic from start() interval",
+        "State label: map 'set-rest' to 'SET REST' explicitly; otherwise use step.state.toUpperCase()",
+        "Exercise display: during 'work' show step.exercise; during 'rest' show 'Next: ' + step.nextExercise (or empty); during 'set-rest' and 'Prep' show step.nextExercise",
+        "Set label: show step.setLabel when state is 'work' or 'rest' AND step.setLabel is not null; otherwise set innerHTML to empty string"
+      ],
+      "unchanged_from_reference": [
+        "updateProgress(exerciseIndex) method — marks li items as completed/current/upcoming",
+        "initializeAudio() — plays and immediately pauses to unlock audio on mobile",
+        "playBeep() — resets currentTime and calls play()",
+        "requestWakeLock() and releaseWakeLock()",
+        "Audio beep triggers: step.remainingTime < 6 || step.remainingTime === 10",
+        "togglePause() / pause / resume logic",
+        "formatTime() helper",
+        "Completion handling: hide #current-exercise and #state, set #countdown to 'COMPLETE', hide pause button"
+      ],
+      "acceptance_criteria": [
+        "Timer constructor accepts a schedule array and wires up all DOM elements including #set-label",
+        "start() interval correctly displays state, exercise, set-label, and countdown each second",
+        "'SET REST' appears in #state during set-rest steps",
+        "#set-label shows 'Set N of M' during work and rest steps when setLabel is not null; is empty otherwise",
+        "#current-exercise shows exercise name during work, 'Next: ...' during rest, set announcement during set-rest",
+        "updateProgress() marks sidebar li items correctly",
+        "Audio beeps fire at remainingTime === 10 and remainingTime < 6",
+        "Pause/Resume toggles correctly",
+        "Screen Wake Lock is requested on start and released on pause and completion"
+      ],
+      "dependencies": ["CORE-1", "CORE-2"],
+      "passes": false
+    },
+    {
+      "id": "CORE-4",
+      "title": "Create timer page render script",
+      "description": "Create timer-render.js, the page bootstrap script for the core timer page. It reads the workout index from the query string, populates the workout name, builds the sidebar exercise list, calculates and displays the total duration, and instantiates the Timer. The sidebar must show all exercise occurrences including repetitions across sets, grouped by phase. Adapted from kettlebell-timer/src/timer-render.js.",
+      "files": [
+        {
+          "path": "core-timer/src/timer-render.js",
+          "action": "create"
+        }
+      ],
+      "reference_file": "kettlebell-timer/src/timer-render.js",
+      "changes_from_reference": [
+        "Import from './workouts', './timer', './utils' (same names, different paths)",
+        "Read workout.phases instead of workout.exercises",
+        "Sidebar construction: iterate phases, then sets 1..phase.sets, then exercises — each occurrence gets a sequential id='exercise-N' li element",
+        "Sidebar label: include set number when phase.sets > 1, e.g. 'Plank (Set 1/3)'",
+        "Duration calculation: sum over phases of (sets * perSetDuration + (sets-1) * restBetweenSets), plus 15s for Prep",
+        "Pass workout.phases (not workout.exercises) to createSchedule()"
+      ],
+      "sidebar_construction": {
+        "container": "#warmup div (same as kettlebell timer)",
+        "structure": "For each phase: create section.phase-section with h2 phase name, then ul containing one li per exercise occurrence (iterating sets 1..N then exercises within each set)",
+        "li_id": "exercise-{globalExerciseIndex} where index increments once per occurrence",
+        "li_class": "'current' for index 0, 'upcoming' for all others",
+        "li_content": "<span class='status-icon'></span>{exercise.name} (Set N/M) — set suffix only when phase.sets > 1"
+      },
+      "duration_formula": "15 + phases.reduce((total, phase) => total + phase.sets * phase.exercises.reduce((s, ex) => s + ex.work + ex.rest, 0) + (phase.sets - 1) * phase.restBetweenSets, 0)",
+      "acceptance_criteria": [
+        "Workout name is rendered in #workout-name",
+        "Sidebar groups exercises by phase with section headers",
+        "All exercise occurrences are listed including set repetitions",
+        "Set suffix appears on sidebar items when phase.sets > 1",
+        "Each li has a unique id matching the exerciseIndex used in createSchedule",
+        "Duration is calculated correctly and displayed in #duration",
+        "Clicking Start button calls timer.start()"
+      ],
+      "dependencies": ["CORE-1", "CORE-2", "CORE-3"],
+      "passes": false
+    },
+    {
+      "id": "CORE-5",
+      "title": "Create selector page script",
+      "description": "Create index.js for the core timer selector page. This script populates the workout dropdown and navigates to the timer page on button click. It is functionally identical to kettlebell-timer/src/index.js — only the console.log labels need updating. No structural changes are required because this script only reads workouts[i].name, which is present on the new data structure.",
+      "files": [
+        {
+          "path": "core-timer/src/index.js",
+          "action": "create"
+        }
+      ],
+      "reference_file": "kettlebell-timer/src/index.js",
+      "changes_from_reference": [
+        "Update console.log label strings from 'Kettlebell Timer' to 'Core Timer'",
+        "Import CSS from '../styles.css' (same relative path)"
+      ],
+      "acceptance_criteria": [
+        "Workout names from workouts.js appear in the #workout-select dropdown",
+        "Clicking 'Load chosen workout' navigates to timer.html?w={index}",
+        "Navigation works correctly whether index.html is served with or without a trailing slash"
+      ],
+      "dependencies": ["CORE-1"],
+      "passes": false
+    },
+    {
+      "id": "CORE-6",
+      "title": "Create HTML page templates",
+      "description": "Create the two HTML shell pages for the core timer sub-app: the selector page (index.html) and the timer page (timer.html). These are shell templates — webpack injects the compiled JS bundle. The selector page is a near-copy of kettlebell-timer/index.html. The timer page is adapted from kettlebell-timer/timer.html: the #target-reps and #next-exercise elements are removed and replaced by a single #set-label element.",
+      "files": [
+        {
+          "path": "core-timer/index.html",
+          "action": "create"
+        },
+        {
+          "path": "core-timer/timer.html",
+          "action": "create"
+        }
+      ],
+      "index_html": {
+        "reference": "kettlebell-timer/index.html",
+        "changes": [
+          "<title>: 'Core Timer - Workout Selector'",
+          "<label> text: 'Choose your core workout'"
+        ]
+      },
+      "timer_html": {
+        "reference": "kettlebell-timer/timer.html",
+        "changes": [
+          "<title>: 'Core Timer'",
+          "Remove <h4 id='target-reps' class='target-reps'>",
+          "Remove <h4 id='next-exercise' class='next-exercise'>",
+          "Add <h4 id='set-label' class='set-label'></h4> in their place"
+        ],
+        "timer_container_structure": [
+          "<h2 id='state'></h2>",
+          "<h3 id='current-exercise'></h3>",
+          "<h4 id='set-label' class='set-label'></h4>",
+          "<div id='countdown' class='countdown-timer'></div>",
+          "<button id='start-button' class='btn'>Start workout</button>",
+          "<button id='pause-resume-button' class='btn' style='display: none;'>Pause</button>"
+        ]
+      },
+      "acceptance_criteria": [
+        "index.html renders a label, select dropdown, and button with correct IDs",
+        "timer.html contains #state, #current-exercise, #set-label, #countdown, #start-button, #pause-resume-button",
+        "timer.html does NOT contain #target-reps or #next-exercise",
+        "Both files have correct viewport meta tag and UTF-8 charset"
+      ],
+      "dependencies": [],
+      "passes": false
+    },
+    {
+      "id": "CORE-7",
+      "title": "Create stylesheet",
+      "description": "Create styles.css for the core timer sub-app. Copy kettlebell-timer/styles.css in full — all existing classes (.workout-container, .workout-timer-container, .phase-section, .countdown-timer, .btn, .completed, .current, .upcoming, .status-icon, etc.) are reused unchanged. Add a new .set-label rule mirroring .target-reps for consistent sizing and weight.",
+      "files": [
+        {
+          "path": "core-timer/styles.css",
+          "action": "create"
+        }
+      ],
+      "reference_file": "kettlebell-timer/styles.css",
+      "additions": [
+        {
+          "selector": ".set-label",
+          "properties": { "font-size": "2rem", "font-weight": "100", "color": "rgba(0,0,0,0.7)" }
+        },
+        {
+          "context": "inside @media (min-width: 376px) block",
+          "selector": ".set-label",
+          "properties": { "font-size": "2.5rem" }
+        }
+      ],
+      "acceptance_criteria": [
+        "All existing CSS classes from kettlebell-timer/styles.css are present",
+        ".set-label rule exists with correct font-size, font-weight, and color",
+        "Responsive .set-label override exists in the @media (min-width: 376px) block"
+      ],
+      "dependencies": [],
+      "passes": false
+    },
+    {
+      "id": "CORE-8",
+      "title": "Wire up webpack build entries",
+      "description": "Update webpack.common.js to add the core timer sub-app as two new entry points and two new HtmlWebpackPlugin instances. This makes webpack aware of the new sub-app and ensures it is compiled and output correctly alongside the existing primal and kettlebell timers.",
+      "files": [
+        {
+          "path": "webpack.common.js",
+          "action": "edit"
+        }
+      ],
+      "entry_additions": {
+        "coreIndex": "./core-timer/src/index.js",
+        "coreTimer": "./core-timer/src/timer-render.js"
+      },
+      "plugin_additions": [
+        {
+          "template": "./core-timer/index.html",
+          "inject": true,
+          "chunks": ["coreIndex"],
+          "filename": "core-timer/index.html"
+        },
+        {
+          "template": "./core-timer/timer.html",
+          "inject": true,
+          "chunks": ["coreTimer"],
+          "filename": "core-timer/timer.html"
+        }
+      ],
+      "acceptance_criteria": [
+        "npm run build completes without errors",
+        "dist/core-timer/index.html is generated",
+        "dist/core-timer/timer.html is generated",
+        "The new entries do not interfere with the existing primal and kettlebell timer builds"
+      ],
+      "dependencies": ["CORE-1", "CORE-2", "CORE-3", "CORE-4", "CORE-5", "CORE-6", "CORE-7"],
+      "passes": false
+    }
+  ],
+  "implementation_order": ["CORE-1", "CORE-2", "CORE-6", "CORE-7", "CORE-3", "CORE-5", "CORE-4", "CORE-8"],
+  "verification": {
+    "build": "npm run build must complete without errors after CORE-8",
+    "end_to_end": [
+      "Navigate to /core-timer/index.html — dropdown lists workout names",
+      "Select a workout, click 'Load chosen workout' — navigates to /core-timer/timer.html?w=0",
+      "Sidebar shows phases as section headers with all exercise occurrences; set suffix on multi-set items",
+      "Duration displayed correctly (verify manually against placeholder workout)",
+      "Click Start: Prep shows 'First up: Dead Bug', set-label empty",
+      "Warm-up work: state=WORK, exercise name shown, set-label empty (single set phase)",
+      "Main set work: state=WORK, set-label shows 'Set 1 of 3'",
+      "Last exercise rest in set 1: exercise area shows 'Set 2 of 3 coming up'",
+      "Set-rest: state=SET REST, set-label empty, exercise area shows 'Set 2 of 3 coming up'",
+      "Set 2 work: set-label shows 'Set 2 of 3'",
+      "Audio beeps at remainingTime === 10 and remainingTime < 6",
+      "Pause button appears on start; Pause/Resume toggles correctly",
+      "Sidebar items transition completed → current → upcoming as workout progresses",
+      "After final exercise: #countdown shows COMPLETE"
+    ]
+  }
+}
