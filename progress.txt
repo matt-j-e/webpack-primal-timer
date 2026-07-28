@@ -1,3 +1,4 @@
 CORE-1 DONE: Created core-timer/src/workouts.js with the Core Foundation placeholder workout (3 phases: Warm Up 1 set, Main Set 3 sets 90s rest, Cool Down 1 set).
 CORE-2 DONE: Created core-timer/src/utils.js with createSchedule(phases) that expands phases into a flat second-by-second schedule (Prep, work, rest, set-rest steps) and secsToString helper.
 CORE-6 DONE: Created core-timer/index.html (selector page, title "Core Timer - Workout Selector", label "Choose your core workout") and core-timer/timer.html (timer page with #set-label replacing #target-reps and #next-exercise).
+CORE-7 DONE: Created core-timer/styles.css — full copy of kettlebell-timer/styles.css with .set-label replacing .target-reps (2rem base, 2.5rem at 376px, 2rem at 850px) and .next-exercise retained.

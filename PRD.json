@@ -278,7 +278,7 @@
         "Responsive .set-label override exists in the @media (min-width: 376px) block"
       ],
       "dependencies": [],
-      "passes": false
+      "passes": true
     },
     {
       "id": "CORE-8",
