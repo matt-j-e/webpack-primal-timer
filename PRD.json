@@ -248,7 +248,7 @@
         "Both files have correct viewport meta tag and UTF-8 charset"
       ],
       "dependencies": [],
-      "passes": false
+      "passes": true
     },
     {
       "id": "CORE-7",
