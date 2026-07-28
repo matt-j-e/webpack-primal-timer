@@ -201,7 +201,7 @@
         "Navigation works correctly whether index.html is served with or without a trailing slash"
       ],
       "dependencies": ["CORE-1"],
-      "passes": false
+      "passes": true
     },
     {
       "id": "CORE-6",

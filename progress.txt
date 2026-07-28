@@ -5,3 +5,4 @@ CORE-7 DONE: Created core-timer/styles.css — full copy of kettlebell-timer/sty
 CORE-3 DONE: Created core-timer/src/timer.js — adapted from kettlebell-timer/src/timer.js. Replaced targetRepsElement/nextExerciseElement with setLabelElement. State label maps 'set-rest' to 'SET REST'. Exercise display: work→exercise name, rest→'Next: ...', set-rest/Prep→nextExercise. Set label shown on work/rest when setLabel non-null, empty otherwise.
 
 CORE-4 DONE: Created core-timer/src/timer-render.js — reads workout.phases, builds sidebar with phase sections and exercise occurrences (set suffix Set N/M when phase.sets > 1), calculates duration with 15s Prep + phase sums, instantiates Timer with createSchedule(workout.phases).
+CORE-5 DONE: Created core-timer/src/index.js — copy of kettlebell-timer/src/index.js with console.log labels updated to 'Core Timer'; populates #workout-select dropdown and navigates to timer.html?w={index} on button click.
