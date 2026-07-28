@@ -96,7 +96,7 @@
         "secsToString correctly formats seconds into M:SS and H:MM:SS"
       ],
       "dependencies": [],
-      "passes": false
+      "passes": true
     },
     {
       "id": "CORE-3",
