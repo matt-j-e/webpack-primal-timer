@@ -315,7 +315,7 @@
         "The new entries do not interfere with the existing primal and kettlebell timer builds"
       ],
       "dependencies": ["CORE-1", "CORE-2", "CORE-3", "CORE-4", "CORE-5", "CORE-6", "CORE-7"],
-      "passes": false
+      "passes": true
     }
   ],
   "implementation_order": ["CORE-1", "CORE-2", "CORE-6", "CORE-7", "CORE-3", "CORE-5", "CORE-4", "CORE-8"],

@@ -6,7 +6,9 @@ module.exports = {
     index: './src/index.js',
     timer: './src/timer-render.js',
     kbIndex: './kettlebell-timer/src/index.js',
-    kbTimer: './kettlebell-timer/src/timer-render.js'
+    kbTimer: './kettlebell-timer/src/timer-render.js',
+    coreIndex: './core-timer/src/index.js',
+    coreTimer: './core-timer/src/timer-render.js'
   },
   resolve: {
     extensions: ['.js'],
@@ -36,6 +38,18 @@ module.exports = {
       inject: true,
       chunks: ['kbTimer'],
       filename: 'kettlebell-timer/timer.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: './core-timer/index.html',
+      inject: true,
+      chunks: ['coreIndex'],
+      filename: 'core-timer/index.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: './core-timer/timer.html',
+      inject: true,
+      chunks: ['coreTimer'],
+      filename: 'core-timer/timer.html'
     })
   ],
   module: {

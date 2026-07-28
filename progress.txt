@@ -6,3 +6,4 @@ CORE-3 DONE: Created core-timer/src/timer.js — adapted from kettlebell-timer/s
 
 CORE-4 DONE: Created core-timer/src/timer-render.js — reads workout.phases, builds sidebar with phase sections and exercise occurrences (set suffix Set N/M when phase.sets > 1), calculates duration with 15s Prep + phase sums, instantiates Timer with createSchedule(workout.phases).
 CORE-5 DONE: Created core-timer/src/index.js — copy of kettlebell-timer/src/index.js with console.log labels updated to 'Core Timer'; populates #workout-select dropdown and navigates to timer.html?w={index} on button click.
+CORE-8 DONE: Updated webpack.common.js with coreIndex and coreTimer entry points and two HtmlWebpackPlugin instances for core-timer/index.html and core-timer/timer.html. npm run build completes successfully; dist/core-timer/index.html and dist/core-timer/timer.html are generated.
